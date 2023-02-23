@@ -16,7 +16,8 @@ Base = declarative_base()
 # Пользователь
 customers = Table('customers', metadata,
     Column("tg_id", Integer(), primary_key=True),
-    Column("phone", String(20), nullable=True)
+    Column("phone", String(20), nullable=True),
+    Column("status", Integer(), nullable=True)
 )
 
 # Создаваемые почтовые ящики
