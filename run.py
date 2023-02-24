@@ -77,7 +77,11 @@ dp.include_router(work_with_mail.router)
 async def main():
     try:
         await db.database.connect()
-        config.whitelist = (set(dict(* await db.database.fetch_all(select(db.customers.c.tg_id))).values()))
+        a = (await db.database.fetch_all(select(db.customers.c.tg_id)))
+        
+        for i in a:
+            config.whitelist.add(*i.values())
+
         print(config.whitelist)
         await dp.start_polling(bot)
     except BaseException as e:
