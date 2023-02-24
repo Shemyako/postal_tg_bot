@@ -24,6 +24,7 @@ async def menu_from_inline(call: types.CallbackQuery):
         pass
     await cmd_start(call)
 
+
 @dp.message(commands=["start"])
 @dp.message(text="Меню")
 async def cmd_start(message: types.Message):
