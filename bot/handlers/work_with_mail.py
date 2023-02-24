@@ -78,6 +78,6 @@ async def pre_mail_deleting(message: types.Message):
     await message.answer("Нажмите почту для удаления.", reply_markup=builder.as_markup())
 
 
-@router.callback_query(lambda call: len(call)>7 and  call[:6]=="delete")
+@router.callback_query(lambda call: len(call.data)>7 and  call.data[:6]=="delete")
 async def mail_deleting(call: types.CallbackQuery):
     print(call)
