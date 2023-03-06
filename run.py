@@ -56,19 +56,18 @@ async def cmd_start(message: types.Message):
 
 @dp.message(content_types='contact')
 async def contact_handler(message: types.Message):
-    # print(message.contact)
-    # query = db.customers.select().where(db.customers.c.tg_id == message.from_user.id)
-
-    # answer =  await db.database.fetch_all(query)
-    
+    """
+    При регистрации пользователь отправляет свой номер телефона. Создание аккаунта
+    """
+    # Есть ли в сете зарегестрированых пользователей
     if message.from_user.id in config.whitelist:
-        await message.answer("Вы уже зарегистрированы! Для работы введите /start")
+        return await message.answer("Вы уже зарегистрированы! Для работы введите /start")
     
     else:
         query = insert(db.customers)
         await db.database.execute(query, {"tg_id":message.contact.user_id, "phone":message.contact.phone_number, "status":0})
-        await message.answer("Теперь Вы зарегистрированы! Для работы введите /start")
         config.whitelist.add(message.from_user.id)
+        return await message.answer("Теперь Вы зарегистрированы! Для работы введите /start")
 
 
 dp.include_router(work_with_mail.router)
