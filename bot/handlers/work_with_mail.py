@@ -52,7 +52,7 @@ async def mail_showing(message: types.Message):
     )
     mails =  await db.database.fetch_all(query)
     # Оформляем почты для последующего вывода
-    mails = "\n".join(["`" + i[0] + "`" for i in mails])
+    mails = "\n".join(["`" + i[0] + "\@" + config.domen + "`" for i in mails])
 
     kb = [[types.KeyboardButton(text="Меню")]]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True, one_time_keyboard=True)
