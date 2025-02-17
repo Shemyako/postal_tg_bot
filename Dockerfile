@@ -1,18 +1,11 @@
-FROM python:3.8
+FROM python:3.10-slim
 
+WORKDIR /app
 
-
-# Установка зависимостей
-# Делаем отдельным процессом заранее, что бы не собирать окружение при каждой сборке контейнера
-ADD requirements.txt ./
+ADD requirements.txt /app/
 RUN pip install pip -U \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r /app/requirements.txt
 
+COPY . /app
 
-
-
-# Добавление файлов проекта в контейнер
-ADD . ./
-
-
-CMD [ "python", "-m", "run"]
+CMD ["python", "-m", "run"]

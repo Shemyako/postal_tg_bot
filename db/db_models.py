@@ -1,39 +1,33 @@
-"""
-Models were rewrited to SQLAlchemy Core from ORM, so it could work with async
-"""
-
-
-from sqlalchemy import Table, Integer, String, Boolean, \
-    Column, DateTime, Date, ForeignKey, Float, BigInteger, MetaData
-from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 
-metadata = MetaData()
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
+
+from .dbhelper import Base
 
 
-Base = declarative_base()
+class Customer(Base):
+    __tablename__ = "customers"
 
-# Пользователь
-customers = Table('customers', metadata,
-    Column("tg_id", Integer(), primary_key=True),
-    Column("phone", String(20), nullable=True),
-    Column("status", Integer(), nullable=True)
-)
-
-# Создаваемые почтовые ящики
-mails = Table('mails', metadata,
-    Column("id", Integer(), primary_key=True),
-    Column("name", String(255), nullable=False),
-    Column("owner", Integer(), ForeignKey('customers.tg_id')),
-    Column("is_active", Boolean(), nullable=False)
-)
+    tg_id: Mapped[int] = mapped_column(primary_key=True)
+    phone: Mapped[str | None] = mapped_column(String(30))
+    status: Mapped[int] = mapped_column(default=0)
 
 
-# Письма, приходящие на почтовые ящики
-messages = Table('messages', metadata,
-    Column("id", Integer, primary_key=True),
-    Column("mail", Integer, ForeignKey('mails.id')),
-    Column("text", String(255), nullable=False),
-    Column("from_user", String(255), nullable=False),
-    Column("date", DateTime(), nullable=False)  
-)
+class Mail(Base):
+    __tablename__ = "mails"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(255))
+    owner: Mapped[int] = mapped_column(ForeignKey("customers.tg_id"))
+    is_active: Mapped[bool] = mapped_column(default=True)
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    mail_id: Mapped[int] = mapped_column(ForeignKey("mails.id"))
+    text: Mapped[str] = mapped_column(String(255))
+    from_user: Mapped[str] = mapped_column(String(255))
+    date: Mapped[datetime]

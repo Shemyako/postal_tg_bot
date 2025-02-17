@@ -12,8 +12,12 @@ Tg bot in POSTAL system
 ![image](https://user-images.githubusercontent.com/52855609/221217673-3776adb9-fe6f-437c-af69-b8d825219583.png)
 ### Получение письма из mail.ru
 
+## Переменные окружения
+`DATABASE_URL` - ссылка подключения к бд
+`BOT_TOKEN` - токен бота
+`DOMEN` - домен, под которым находятся почты
 
-
+`LOG_LEVEL` - уровень логирования
 
 ## [Почтовая часть](https://github.com/Shemyako/postal_mail_server):
 Получение письма, его парсинг, если есть получатель, то добавляем в очередь и пересылаем
